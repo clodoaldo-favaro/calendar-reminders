@@ -1,11 +1,11 @@
 <template>
     <div class="calendar-date-selector">
         <span @click="selectPrevious">
-            <ph-caret-left :size="32" :weight="bold"></ph-caret-left>
+            <ph-caret-left :size="32" :weight="'bold'"></ph-caret-left>
         </span>
         <span @click="selectCurrent" class="select-current">Current</span>
         <span @click="selectNext">
-            <ph-caret-right :size="32" :weight="bold"></ph-caret-right>
+            <ph-caret-right :size="32" :weight="'bold'"></ph-caret-right>
         </span>
     </div>
 </template>
@@ -58,6 +58,10 @@ function selectNext() {
 
 .calendar-date-selector span.select-current {
     margin-top: -8px;
+}
+
+span svg {
+    color: var(--gray-400);
 }
 
 span svg:hover {
