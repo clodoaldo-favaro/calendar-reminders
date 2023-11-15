@@ -17,10 +17,13 @@ This project allows you to set reminders, choosing a date and time.
 - [Gallery](#camera-gallery)
 
 ##  :beginner: About
-Add a detailed introduction about the project here, everything you want the reader to know.
+
+Calendar Reminders lets you add reminders on a calendar view. 
+It also shows the weather forecast for the day of your reminder.
 
 ## :zap: Usage
-Write about how to use this project.
+
+
 
 ###  :electric_plug: Installation
 - Steps on how to install this project, to use it.
