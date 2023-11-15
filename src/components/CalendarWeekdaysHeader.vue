@@ -12,13 +12,13 @@ const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frida
 ol {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    background-color: #0f65c1;
+    background-color: var(--blue-400);
 }
 
 li {
     text-align: center;
     padding: 5px;
     font-weight: bold;
-    color: #FFF;
+    color: var(--white);
 }
 </style>

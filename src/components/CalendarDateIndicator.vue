@@ -22,6 +22,6 @@ const selectedMonth = computed(() => {
 .calendar-date-indicator {
     font-size: 24px;
     font-weight: 600;
-    color: var(--grey-00);
+    color: var(--gray-00);
 }
 </style>

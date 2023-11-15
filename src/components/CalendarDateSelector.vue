@@ -53,7 +53,7 @@ function selectNext() {
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    color: var(--grey-800);
+    color: var(--gray-800);
 }
 
 .calendar-date-selector span.select-current {
@@ -61,7 +61,7 @@ function selectNext() {
 }
 
 span svg:hover {
-    background-color: var(--grey-100);
+    background-color: var(--gray-100);
     border-radius: 6px;
 }
 

@@ -133,33 +133,22 @@ function selectDate(newSelectedDate) {
 .calendar-month-header {
     display: flex;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: var(--white);
     padding: 10px;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
 }
 
 .calendar-month {
     position: relative;
-    background-color: var(--grey-200);
     border: 1px solid black;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
 }
 
-.day-of-week {
-    color: var(--grey-800);
-    font-size: 18px;
-    background-color: #fff;
-    padding-bottom: 5px;
-    padding-top: 10px;
-}
-
-.day-of-week,
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-}
-
-.day-of-week>* {
-    text-align: right;
-    padding-right: 5px;
 }
 
 .days-grid {
@@ -167,6 +156,6 @@ function selectDate(newSelectedDate) {
     position: relative;
     grid-column-gap: var(--grid-gap);
     grid-row-gap: var(--grid-gap);
-    background-color: black;
+    background-color: var(--blue-600);
 }
 </style>
