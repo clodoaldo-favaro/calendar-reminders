@@ -9,6 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@phosphor-icons/vue": "^2.1.6",
         "dayjs": "^1.11.10",
         "pinia": "^2.1.7",
         "primevue": "^3.40.1",
