@@ -7,7 +7,9 @@
         <span>{{ label }}</span>
         <ol class="reminders-small">
             <li v-for="reminder in reminders" :key="reminder.id">
-                {{ reminder.description }}
+                <span :style="{ color: `#${reminder.color}` }">
+                    {{ reminder.description }}
+                </span>
             </li>
         </ol>
     </li>
