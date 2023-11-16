@@ -10,11 +10,6 @@ export const useReminderStore = defineStore('reminders', {
 	getters: {
 		getRemindersByDateSortedByTime: (state) => {
 			return (date) => {
-				if (!(date instanceof Date)) {
-					debugger
-					return []
-				}
-
 				return state.reminders
 					.filter((reminder) => {
 						return (
@@ -24,9 +19,12 @@ export const useReminderStore = defineStore('reminders', {
 						)
 					})
 					.sort((reminderA, reminderB) => {
-						const dateCompare = reminderB.date - reminderA.date
-						if (dateCompare != 0) {
-							return dateCompare
+						if (reminderA.date < reminderB.date) {
+							return -1
+						}
+
+						if (reminderA.date > reminderB.date) {
+							return 1
 						}
 
 						const descriptionA = reminderA.toUpperCase()

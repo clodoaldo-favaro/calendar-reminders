@@ -141,7 +141,7 @@ const nextMonthDays = computed(() => {
         (day, index) => {
             return {
                 date: dayjs(`${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`).format('YYYY-MM-DD'),
-                dateJs: dayjs(`${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`),
+                dateJs: dayjs(`${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`).toDate(),
                 isCurrentMonth: false,
             };
         }
