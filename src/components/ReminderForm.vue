@@ -131,7 +131,9 @@ function initialValuesReminder() {
     }
 
     if (props.selectedDate) {
-        const date = dayjs(props.selectedDate);
+        let date = dayjs(props.selectedDate);
+        const dateNow = new Date();
+        date = date.set('hours', dateNow.getHours()).set('minutes', dateNow.getMinutes());
 
         return {
             description: '',
@@ -186,7 +188,6 @@ const onSubmit = handleSubmit((values) => {
     let date = dayjs(values.date);
     let time = values.time;
 
-    debugger;
     if (typeof time === 'string') {
         time = time.split(':');
         date = date.set('hours', parseInt(time[0])).set('minutes', parseInt(time[1]));
