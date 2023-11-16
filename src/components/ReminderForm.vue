@@ -74,6 +74,13 @@ import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import ColorPicker from 'primevue/colorpicker';
 import SlideIn from './SlideIn.vue';
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
+
+function showSuccessToast() {
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Reminder added', life: 3000 })
+}
 
 const schema = toTypedSchema(
     yup.object({
@@ -159,12 +166,10 @@ const formTitle = computed(() => {
 });
 
 const onSubmit = handleSubmit((values) => {
-    debugger
-    console.log('Submitted with', values);
     resetForm();
-    // emit('confirm');
+    showSuccessToast();
+    emit('confirm');
 })
-
 
 function handleClickCancel() {
     emit('cancel');
@@ -175,7 +180,6 @@ function handleClickClose() {
 }
 
 async function handleClickOk() {
-    debugger;
     if (submitButton.value) {
         submitButton.value.click();
     }

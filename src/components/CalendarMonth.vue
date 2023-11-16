@@ -13,8 +13,7 @@
         </ol>
 
         <Button type="button" label="+ Add reminder" @click="showReminderForm" />
-        <!-- <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" :reminder="reminderSample" /> -->
-        <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" />
+        <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" @confirm="hideReminderForm" />
     </div>
 </template >
 
@@ -27,8 +26,8 @@ import CalendarDateIndicator from './CalendarDateIndicator.vue';
 import CalendarDateSelector from './CalendarDateSelector.vue';
 import CalendarWeekdaysHeader from './CalendarWeekdaysHeader.vue';
 import ReminderForm from './ReminderForm.vue';
+import Button from 'primevue/button';
 
-import Button from 'primevue/button'
 
 dayjs.extend(weekOfYear);
 
