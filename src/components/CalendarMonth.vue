@@ -12,8 +12,10 @@
             <CalendarMonthDayItem v-for="day in days" :key="day.date" :day="day" :is-today="day.date === today" />
         </ol>
 
-        <Button type="button" label="+ Add reminder" @click="showReminderForm" @cancel="hideReminderForm" />
-        <ReminderForm v-if="isReminderFormVisible" />
+        <Button type="button" label="+ Add reminder" @click="showReminderForm" />
+        <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" />
+
+        <ColorPicker v-model="color" />
     </div>
 </template >
 
@@ -26,6 +28,7 @@ import CalendarDateIndicator from './CalendarDateIndicator.vue';
 import CalendarDateSelector from './CalendarDateSelector.vue';
 import CalendarWeekdaysHeader from './CalendarWeekdaysHeader.vue';
 import ReminderForm from './ReminderForm.vue';
+import ColorPicker from 'primevue/colorpicker';
 
 import Button from 'primevue/button'
 
