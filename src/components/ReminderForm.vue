@@ -66,7 +66,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup'
@@ -77,6 +79,8 @@ import SlideIn from './SlideIn.vue';
 import { useToast } from "primevue/usetoast";
 import { useReminderStore } from '../stores/ReminderStore';
 import { v4 as uuidv4 } from 'uuid'
+
+dayjs.extend(LocalizedFormat)
 
 const toast = useToast();
 const store = useReminderStore()
@@ -89,7 +93,13 @@ const schema = toTypedSchema(
     yup.object({
         description: yup.string().required().max(30).label('Description'),
         date: yup.date().required().label('Date'),
-        time: yup.string().required().label('Time'),
+        time: yup.lazy(value => {
+            if (typeof value === 'string') {
+                return yup.string().required().label('Time').length(5).matches(/(\d){2}:(\d){2}/, 'Hour must have this pattern "00:00"');
+            }
+
+            return yup.mixed().required();
+        }),
         city: yup.string().required().label('City'),
         color: yup.string().required().label('Color')
     })
@@ -97,7 +107,7 @@ const schema = toTypedSchema(
 
 const props = defineProps({
     selectedDate: {
-        type: Object,
+        type: Date,
         required: false
     },
     reminder: {
@@ -109,21 +119,24 @@ const props = defineProps({
 function initialValuesReminder() {
     if (props.reminder) {
         const reminder = props.reminder;
+        const date = dayjs(props.reminder.date);
 
         return {
             description: reminder.description,
-            date: reminder.date,
-            time: reminder.time,
+            date: date.toDate(),
+            time: date.format('h:mm'),
             city: reminder.city,
-            color: reminder.city
+            color: reminder.color
         }
     }
 
     if (props.selectedDate) {
+        const date = dayjs(props.selectedDate);
+
         return {
             description: '',
-            date: props.selectedDate.date,
-            time: props.selectedDate.time,
+            date: date.toDate(),
+            time: date.format('h:mm'),
             city: '',
             color: '000000'
         }
@@ -138,7 +151,7 @@ function initialValuesReminder() {
     }
 }
 
-const { handleSubmit, resetForm, defineComponentBinds, defineInputBinds, errors } = useForm({
+const { handleSubmit, resetForm, defineComponentBinds, setFieldValue, errors } = useForm({
     validationSchema: schema,
     initialValues: initialValuesReminder()
 });
@@ -152,8 +165,7 @@ const color = defineComponentBinds('color');
 const colorPicker = ref(props?.reminder?.color || '000000');
 
 function updateColor(newColor) {
-    const hiddenColorInput = <HTMLInputElement>document.getElementById('color');
-    hiddenColorInput.value = newColor;
+    setFieldValue('color', newColor);
 }
 
 const submitButton = ref<HTMLButtonElement | null>(null);
@@ -169,12 +181,21 @@ const formTitle = computed(() => {
 });
 
 const onSubmit = handleSubmit((values) => {
+    let date = dayjs(values.date);
+    let time = values.time;
+
     debugger;
+    if (typeof time === 'string') {
+        time = time.split(':');
+        date = date.set('hours', parseInt(time[0])).set('minutes', parseInt(time[1]));
+    } else if (time instanceof Date) {
+        date = date.set('hours', time.getHours()).set('minutes', time.getMinutes());
+    }
+
     const reminder = {
         id: '',
         description: values.description,
-        date: values.date,
-        time: values.time,
+        date: date.toDate(),
         city: values.city,
         color: values.color
     };

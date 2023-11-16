@@ -4,17 +4,18 @@ export const useReminderStore = defineStore('reminders', {
 	state: () => {
 		return {
 			reminders: [],
+			selectedDate: null,
 		}
 	},
 	getters: {
-		remindersByDateSortedByTime(date) {
-			debugger
+		getRemindersByDateSortedByTime() {
 			return this.reminders
 				.filter((reminder) => {
 					return (
-						reminder.getDate() === date.getDate() &&
-						reminder.getMonth() === date.getMonth() &&
-						reminder.getFullYear() === date.getFullYear()
+						reminder.getDate() === this.selectedDate.getDate() &&
+						reminder.getMonth() === this.selectedDate.getMonth() &&
+						reminder.getFullYear() ===
+							this.selectedDate.getFullYear()
 					)
 				})
 				.sort((reminderA, reminderB) => {

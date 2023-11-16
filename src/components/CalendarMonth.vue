@@ -9,12 +9,16 @@
         <CalendarWeekdaysHeader />
 
         <ol class="days-grid">
-            <CalendarMonthDayItem v-for="day in days" :key="day.date" :day="day" :is-today="day.date === today" />
+            <CalendarMonthDayItem v-for="day in days" :key="day.date" :day="day" :is-today="day.date === today"
+                @click="openReminderFormWithSelectedDate(day.dateJs)" />
         </ol>
 
-        <Button type="button" label="+ Add reminder" @click="showReminderForm" />
-        <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" @confirm="hideReminderForm" />
     </div>
+
+    <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" @confirm="hideReminderForm"
+        :selected-date="store.selectedDate" />
+
+    <Button type="button" label="+ Add reminder" @click="showReminderForm" />
 </template >
 
 <script setup >
@@ -27,11 +31,29 @@ import CalendarDateSelector from './CalendarDateSelector.vue';
 import CalendarWeekdaysHeader from './CalendarWeekdaysHeader.vue';
 import ReminderForm from './ReminderForm.vue';
 import Button from 'primevue/button';
+import { useReminderStore } from '../stores/ReminderStore';
 
+const store = useReminderStore()
 
 dayjs.extend(weekOfYear);
 
 let selectedDate = ref(dayjs());
+
+function openReminderFormWithSelectedDate(date) {
+    debugger;
+    store.selectedDate = date;
+
+    const reminders = store.getRemindersByDateSortedByTime;
+    if (reminders.length === 0) {
+        showReminderForm();
+    } else {
+        //TODO Show reminders list
+    }
+}
+
+function resetClickedSelectedDate() {
+    store.selectedDate = null;
+}
 
 const days = computed(() => {
     return [
@@ -63,6 +85,7 @@ const currentMonthDays = computed(() => {
             date: dayjs(
                 `${year.value}-${month.value}-${index + 1}`
             ).format('YYYY-MM-DD'),
+            dateJs: dayjs(`${year.value}-${month.value}-${index + 1}`).toDate(),
             isCurrentMonth: true,
         };
     });
@@ -91,6 +114,7 @@ const previousMonthDays = computed(() => {
                     `${previousMonth.year()}-${previousMonth.month() + 1
                     }-${previousMonthLastSundayDayOfMonth + index}`
                 ).format('YYYY-MM-DD'),
+                dateJs: dayjs(`${previousMonth.year()}-${previousMonth.month() + 1}-${previousMonthLastSundayDayOfMonth + index}`).toDate(),
                 isCurrentMonth: false,
             };
         }
@@ -115,10 +139,8 @@ const nextMonthDays = computed(() => {
     return [...Array(visibleNumberOfDaysFromNextMonth)].map(
         (day, index) => {
             return {
-                date: dayjs(
-                    `${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1
-                    }`
-                ).format('YYYY-MM-DD'),
+                date: dayjs(`${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`).format('YYYY-MM-DD'),
+                dateJs: dayjs(`${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`),
                 isCurrentMonth: false,
             };
         }
@@ -142,6 +164,7 @@ function showReminderForm() {
 
 function hideReminderForm() {
     isReminderFormVisible.value = false;
+    resetClickedSelectedDate();
 }
 
 </script>
