@@ -95,7 +95,7 @@ const schema = toTypedSchema(
         date: yup.date().required().label('Date'),
         time: yup.lazy(value => {
             if (typeof value === 'string') {
-                return yup.string().required().label('Time').length(5).matches(/(\d){2}:(\d){2}/, 'Hour must have this pattern "00:00"');
+                return yup.string().required().label('Time').min(4).matches(/(\d){1,2}:(\d){2}/, 'Hour must have this pattern "00:00"');
             }
 
             return yup.mixed().required();
@@ -124,7 +124,7 @@ function initialValuesReminder() {
         return {
             description: reminder.description,
             date: date.toDate(),
-            time: date.format('h:mm'),
+            time: date.format('HH:mm'),
             city: reminder.city,
             color: reminder.color
         }
@@ -136,16 +136,18 @@ function initialValuesReminder() {
         return {
             description: '',
             date: date.toDate(),
-            time: date.format('h:mm'),
+            time: date.format('HH:mm'),
             city: '',
             color: '000000'
         }
     }
 
+    const date = dayjs();
+
     return {
         description: '',
-        date: '',
-        time: '',
+        date: date.toDate(),
+        time: date.format('HH:mm'),
         city: '',
         color: '000000'
     }

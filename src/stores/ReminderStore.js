@@ -8,37 +8,44 @@ export const useReminderStore = defineStore('reminders', {
 		}
 	},
 	getters: {
-		getRemindersByDateSortedByTime() {
-			return this.reminders
-				.filter((reminder) => {
-					return (
-						reminder.getDate() === this.selectedDate.getDate() &&
-						reminder.getMonth() === this.selectedDate.getMonth() &&
-						reminder.getFullYear() ===
-							this.selectedDate.getFullYear()
-					)
-				})
-				.sort((reminderA, reminderB) => {
-					const dateCompare = reminderA.date - reminderB.date
-					if (dateCompare != 0) {
-						return dateCompare
-					}
+		getRemindersByDateSortedByTime: (state) => {
+			return (date) => {
+				if (!(date instanceof Date)) {
+					debugger
+					return []
+				}
 
-					const descriptionA = reminderA.toUpperCase()
-					const descriptionB = reminderB.toUpperCase()
+				return state.reminders
+					.filter((reminder) => {
+						return (
+							reminder.date.getDate() === date.getDate() &&
+							reminder.date.getMonth() === date.getMonth() &&
+							reminder.date.getFullYear() === date.getFullYear()
+						)
+					})
+					.sort((reminderA, reminderB) => {
+						const dateCompare = reminderB.date - reminderA.date
+						if (dateCompare != 0) {
+							return dateCompare
+						}
 
-					if (descriptionA < descriptionB) {
-						return -1
-					}
+						const descriptionA = reminderA.toUpperCase()
+						const descriptionB = reminderB.toUpperCase()
 
-					if (descriptionA > descriptionB) {
-						return 1
-					}
+						if (descriptionA < descriptionB) {
+							return -1
+						}
 
-					return 0
-				})
+						if (descriptionA > descriptionB) {
+							return 1
+						}
+
+						return 0
+					})
+			}
 		},
 	},
+
 	actions: {
 		addReminder(reminder) {
 			this.reminders.push(reminder)

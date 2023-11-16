@@ -5,12 +5,20 @@
         'calendar-day--weekend': isWeekend
     }">
         <span>{{ label }}</span>
+        <ol class="reminders-small">
+            <li v-for="reminder in reminders" :key="reminder.id">
+                {{ reminder.description }}
+            </li>
+        </ol>
     </li>
 </template>
 
 <script setup>
 import dayjs from "dayjs";
 import { computed } from "vue";
+import { useReminderStore } from "../stores/ReminderStore";
+
+const store = useReminderStore();
 
 const props = defineProps({
     day: {
@@ -33,6 +41,10 @@ const label = computed(() => {
     return dayjs(props.day.date).format("D");
 });
 
+const reminders = computed(() => {
+    return store.getRemindersByDateSortedByTime(props.day.dateJs);
+})
+
 const SATURDAY = 6;
 const SUNDAY = 0;
 
@@ -51,6 +63,7 @@ const isWeekend = computed(() => {
     color: var(--gray-800);
     padding: 5px;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .calendar-day>span {
@@ -69,6 +82,7 @@ const isWeekend = computed(() => {
 }
 
 .calendar-day--today>span::before {
+    display: block;
     content: '';
     position: absolute;
     left: -4px;
@@ -82,5 +96,14 @@ const isWeekend = computed(() => {
 
 .calendar-day--weekend>span {
     color: var(--blue-400);
+}
+
+ol.reminders-small {
+    margin-top: 32px;
+    font-size: 12px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>

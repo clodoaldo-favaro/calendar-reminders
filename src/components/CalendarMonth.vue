@@ -16,7 +16,7 @@
     </div>
 
     <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" @confirm="hideReminderForm"
-        :selected-date="store.selectedDate" />
+        :selected-date="selectedDateFromCalendar" />
 
     <Button type="button" label="+ Add reminder" @click="showReminderForm" />
 </template >
@@ -38,12 +38,13 @@ const store = useReminderStore()
 dayjs.extend(weekOfYear);
 
 let selectedDate = ref(dayjs());
+let selectedDateFromCalendar = ref(new Date())
 
 function openReminderFormWithSelectedDate(date) {
     debugger;
-    store.selectedDate = date;
+    selectedDateFromCalendar.value = date;
 
-    const reminders = store.getRemindersByDateSortedByTime;
+    const reminders = store.getRemindersByDateSortedByTime(date);
     if (reminders.length === 0) {
         showReminderForm();
     } else {
@@ -52,7 +53,7 @@ function openReminderFormWithSelectedDate(date) {
 }
 
 function resetClickedSelectedDate() {
-    store.selectedDate = null;
+    selectedDateFromCalendar.value = new Date();
 }
 
 const days = computed(() => {
@@ -184,18 +185,17 @@ function hideReminderForm() {
     border: 1px solid black;
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
+    max-width: 100%;
 }
 
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-}
-
-.days-grid {
-    height: 100%;
-    position: relative;
     grid-column-gap: var(--grid-gap);
     grid-row-gap: var(--grid-gap);
+    max-width: 100%;
+    height: 100%;
+    position: relative;
     background-color: var(--blue-600);
 }
 </style>
