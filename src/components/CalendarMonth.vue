@@ -11,10 +11,13 @@
         <ol class="days-grid">
             <CalendarMonthDayItem v-for="day in days" :key="day.date" :day="day" :is-today="day.date === today" />
         </ol>
-    </div>
-</template>
 
-<script setup>
+        <Button type="button" label="+ Add reminder" @click="showReminderForm" @cancel="hideReminderForm" />
+        <ReminderForm v-if="isReminderFormVisible" />
+    </div>
+</template >
+
+<script setup >
 import { ref, computed } from 'vue';
 import dayjs from 'dayjs';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
@@ -22,6 +25,9 @@ import CalendarMonthDayItem from './CalendarMonthDayItem.vue';
 import CalendarDateIndicator from './CalendarDateIndicator.vue';
 import CalendarDateSelector from './CalendarDateSelector.vue';
 import CalendarWeekdaysHeader from './CalendarWeekdaysHeader.vue';
+import ReminderForm from './ReminderForm.vue';
+
+import Button from 'primevue/button'
 
 dayjs.extend(weekOfYear);
 
@@ -126,6 +132,17 @@ function getWeekday(date) {
 function selectDate(newSelectedDate) {
     selectedDate.value = newSelectedDate;
 };
+
+
+const isReminderFormVisible = ref(false);
+
+function showReminderForm() {
+    isReminderFormVisible.value = true;
+}
+
+function hideReminderForm() {
+    isReminderFormVisible.value = false;
+}
 
 </script>
 
