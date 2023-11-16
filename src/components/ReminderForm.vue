@@ -75,8 +75,11 @@ import Calendar from 'primevue/calendar';
 import ColorPicker from 'primevue/colorpicker';
 import SlideIn from './SlideIn.vue';
 import { useToast } from "primevue/usetoast";
+import { useReminderStore } from '../stores/ReminderStore';
+import { v4 as uuidv4 } from 'uuid'
 
 const toast = useToast();
+const store = useReminderStore()
 
 function showSuccessToast() {
     toast.add({ severity: 'success', summary: 'Success', detail: 'Reminder added', life: 3000 })
@@ -166,6 +169,22 @@ const formTitle = computed(() => {
 });
 
 const onSubmit = handleSubmit((values) => {
+    debugger;
+    const reminder = {
+        id: '',
+        description: values.description,
+        date: values.date,
+        time: values.time,
+        city: values.city,
+        color: values.color
+    };
+
+    if (!props.reminder) {
+        reminder.id = uuidv4();
+    }
+
+    store.addReminder(reminder);
+
     resetForm();
     showSuccessToast();
     emit('confirm');
