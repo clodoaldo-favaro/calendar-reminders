@@ -18,6 +18,9 @@
     <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" @confirm="hideReminderForm"
         :selected-date="selectedDateFromCalendar" />
 
+    <CalendarDayReminders v-if="isCalendarDayRemindersVisible" @cancel="hideCalendarReminders"
+        @confirm="showCalendarReminders" :selected-date="selectedDateFromCalendar" />
+
     <Button type="button" label="+ Add reminder" @click="showReminderForm" />
 </template >
 
@@ -30,6 +33,7 @@ import CalendarDateIndicator from './CalendarDateIndicator.vue';
 import CalendarDateSelector from './CalendarDateSelector.vue';
 import CalendarWeekdaysHeader from './CalendarWeekdaysHeader.vue';
 import ReminderForm from './ReminderForm.vue';
+import CalendarDayReminders from './CalendarDayReminders.vue';
 import Button from 'primevue/button';
 import { useReminderStore } from '../stores/ReminderStore';
 
@@ -48,7 +52,7 @@ function openReminderFormWithSelectedDate(date) {
     if (reminders.length === 0) {
         showReminderForm();
     } else {
-        //TODO Show reminders list
+        showCalendarReminders();
     }
 }
 
@@ -165,6 +169,17 @@ function showReminderForm() {
 
 function hideReminderForm() {
     isReminderFormVisible.value = false;
+    resetClickedSelectedDate();
+}
+
+const isCalendarDayRemindersVisible = ref(false);
+
+function showCalendarReminders() {
+    isCalendarDayRemindersVisible.value = true;
+}
+
+function hideCalendarReminders() {
+    isCalendarDayRemindersVisible.value = false;
     resetClickedSelectedDate();
 }
 
