@@ -86,7 +86,8 @@ const toast = useToast();
 const store = useReminderStore()
 
 function showSuccessToast() {
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Reminder added', life: 3000 })
+    const detail = props.reminder ? 'Reminder updated' : 'Reminder added';
+    toast.add({ severity: 'success', summary: 'Success', detail, life: 3000 })
 }
 
 const schema = toTypedSchema(
