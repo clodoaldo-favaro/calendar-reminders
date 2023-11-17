@@ -16,8 +16,8 @@
                         <Button @click="openReminderFormWithSelectedReminder(reminder)" icon="pi pi-pencil"
                             aria-label="Edit" outlined severity="info" text title="Edit" />
 
-                        <Button @click="openReminderFormWithSelectedReminder(reminder)" icon="pi pi-trash"
-                            aria-label="Delete" outlined severity="danger" text title="Delete" />
+                        <Button @click="removeReminder(reminder.id)" icon="pi pi-trash" aria-label="Delete" outlined
+                            severity="danger" text title="Delete" />
 
                     </div>
                 </li>
@@ -53,8 +53,13 @@ const isReminderFormVisible = ref(false);
 function openReminderFormWithSelectedReminder(reminder) {
     selectedReminder.value = reminder;
     showReminderForm();
-
 }
+
+function removeReminder(reminderId) {
+    debugger;
+    store.removeReminder(reminderId);
+}
+
 
 function showReminderForm() {
     isReminderFormVisible.value = true;
@@ -65,7 +70,6 @@ function hideReminderForm() {
 }
 
 const label = computed(() => {
-    debugger;
     const date = dayjs(props.selectedDate);
     return date.format("YYYY MMMM, DD - dddd");
 });

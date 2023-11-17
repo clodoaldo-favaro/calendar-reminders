@@ -185,6 +185,7 @@ const formTitle = computed(() => {
 });
 
 const onSubmit = handleSubmit((values) => {
+    debugger;
     let date = dayjs(values.date);
     let time = values.time;
 
@@ -205,9 +206,11 @@ const onSubmit = handleSubmit((values) => {
 
     if (!props.reminder) {
         reminder.id = uuidv4();
+        store.addReminder(reminder);
+    } else {
+        store.updateReminder(props.reminder.id, reminder);
     }
 
-    store.addReminder(reminder);
 
     resetForm();
     showSuccessToast();
