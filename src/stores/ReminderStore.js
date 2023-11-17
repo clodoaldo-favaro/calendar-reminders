@@ -74,5 +74,33 @@ export const useReminderStore = defineStore('reminders', {
 				)
 			}
 		},
+		async getWeatherInfo(city, date) {
+			debugger
+			let url
+
+			if (city.countryCode === 'US') {
+				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.stateCode},${city.countryCode}`
+			} else {
+				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.countryCode}`
+			}
+
+			url += '&appid=4d75313d4c53abfca0f9e78c3888260b'
+
+			const weatherData = await fetch(url)
+			const weatherDataJson = await weatherData.json()
+
+			if (weatherDataJson.cod === '200') {
+				return weatherDataJson.list.filter((weatherData) => {
+					const weatherDataDate = new Date(weatherData.dt * 1000)
+					return (
+						weatherDataDate.getDate() === date.getDate() &&
+						weatherDataDate.getMonth() === date.getMonth() &&
+						weatherDataDate.getFullYear() === date.getFullYear()
+					)
+				})
+			} else {
+				return null
+			}
+		},
 	},
 })

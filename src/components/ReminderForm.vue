@@ -35,15 +35,15 @@
                         </small>
                     </div>
 
-                    <div>
+                    <div class="city-select-container">
                         <span class="p-float-label">
-                            <InputText id="city" v-bind="city" :class="{ 'p-invalid': errors.city }"
-                                aria-describedby="text-error" />
+                            <CascadeSelect v-bind="city" append-to="self" :class="{ 'p-invalid': errors.city }"
+                                :options="countries" optionLabel="cname" optionGroupLabel="name"
+                                :optionGroupChildren="['states', 'cities']" style="min-width: 14rem"
+                                placeholder="Select a City" aria-describedby="cc-error" />
                             <label for="city">City</label>
                         </span>
-                        <small id="city-error" class="p-error">
-                            {{ errors.city }}
-                        </small>
+                        <small class="p-error" id="city-error">{{ errors.city }}</small>
                     </div>
                 </div>
 
@@ -66,13 +66,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup'
 import InputText from 'primevue/inputtext';
+import CascadeSelect from 'primevue/cascadeselect';
 import Calendar from 'primevue/calendar';
 import ColorPicker from 'primevue/colorpicker';
 import SlideIn from './SlideIn.vue';
@@ -101,7 +102,7 @@ const schema = toTypedSchema(
 
             return yup.mixed().required();
         }),
-        city: yup.string().required().label('City'),
+        city: yup.object().required().label('City'),
         color: yup.string().required().label('Color')
     })
 )
@@ -156,7 +157,7 @@ function initialValuesReminder() {
     }
 }
 
-const { handleSubmit, resetForm, defineComponentBinds, setFieldValue, errors } = useForm({
+const { handleSubmit, resetForm, defineComponentBinds, setFieldValue, errors, values } = useForm({
     validationSchema: schema,
     initialValues: initialValuesReminder()
 });
@@ -166,6 +167,27 @@ const date = defineComponentBinds('date');
 const time = defineComponentBinds('time');
 const city = defineComponentBinds('city');
 const color = defineComponentBinds('color');
+
+const showWeather = ref(false);
+const weatherInfo = ref(null);
+
+onMounted(() => {
+    debugger;
+    if (values.date && values.city) {
+        showWeather.value = true;
+    }
+})
+
+watch([() => values.date, () => values.city], async ([newDate, newCity]) => {
+    debugger;
+    if (newDate && newCity) {
+        console.log(newDate);
+        console.log(newCity);
+        weatherInfo.value = await store.getWeatherInfo(newCity, newDate);
+    } else {
+        showWeather.value = false;
+    }
+});
 
 const colorPicker = ref(props?.reminder?.color || '000000');
 
@@ -232,6 +254,82 @@ function handleClickOk() {
     }
 }
 
+const countries = ref([
+    {
+        name: 'Australia',
+        code: 'AU',
+        states: [
+            {
+                name: 'New South Wales',
+                cities: [
+                    { cname: 'Sydney', countryCode: 'AU', stateCode: 'NSW' },
+                    { cname: 'Newcastle', countryCode: 'AU', stateCode: 'NSW' },
+                    { cname: 'Wollongong', countryCode: 'AU', stateCode: 'NSW' }
+                ]
+            },
+            {
+                name: 'Queensland',
+                cities: [
+                    { cname: 'Brisbane', countryCode: 'AU', stateCode: 'QLD' },
+                    { cname: 'Townsville', countryCode: 'AU', stateCode: 'QLD' }
+                ]
+            }
+        ]
+    },
+    {
+        name: 'Canada',
+        code: 'CA',
+        states: [
+            {
+                name: 'Quebec',
+                cities: [
+                    { cname: 'Montreal', countryCode: 'CA', stateCode: 'QC' },
+                    { cname: 'Quebec City', countryCode: 'CA', stateCode: 'QC' }
+                ]
+            },
+            {
+                name: 'Ontario',
+                cities: [
+                    { cname: 'Ottawa', countryCode: 'CA', stateCode: 'ON' },
+                    { cname: 'Toronto', countryCode: 'CA', stateCode: 'ON' }
+                ]
+            }
+        ]
+    },
+    {
+        name: 'United States',
+        code: 'US',
+        states: [
+            {
+                name: 'California',
+                cities: [
+                    { cname: 'Los Angeles', countryCode: 'US', stateCode: 'CA' },
+                    { cname: 'San Diego', countryCode: 'US', stateCode: 'CA' },
+                    { cname: 'San Francisco', countryCode: 'US', stateCode: 'CA' }
+                ]
+            },
+            {
+                name: 'Florida',
+                cities: [
+                    { cname: 'Jacksonville', countryCode: 'US', stateCode: 'FL' },
+                    { cname: 'Miami', countryCode: 'US', stateCode: 'FL' },
+                    { cname: 'Tampa', countryCode: 'US', stateCode: 'FL' },
+                    { cname: 'Orlando', countryCode: 'US', stateCode: 'FL' }
+                ]
+            },
+            {
+                name: 'Texas',
+                cities: [
+                    { cname: 'Austin', countryCode: 'US', stateCode: 'TX' },
+                    { cname: 'Dallas', countryCode: 'US', stateCode: 'TX' },
+                    { cname: 'Houston', countryCode: 'US', stateCode: 'TX' }
+                ]
+            }
+        ]
+    }
+]);
+
+
 </script>
 
 <style scoped>
@@ -251,6 +349,10 @@ form {
     row-gap: 32px;
     column-gap: 16px;
     align-items: start;
+}
+
+.city-select-container {
+    flex-basis: 100%;
 }
 
 #submitButton {

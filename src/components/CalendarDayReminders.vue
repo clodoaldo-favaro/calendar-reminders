@@ -11,6 +11,9 @@
                         <span :style="{ color: `#${reminder.color}` }">
                             {{ reminder.description }}
                         </span>
+                        <span>
+                            {{ reminder.city }}
+                        </span>
                     </div>
                     <div>
                         <Button @click="openReminderFormWithSelectedReminder(reminder)" icon="pi pi-pencil"
