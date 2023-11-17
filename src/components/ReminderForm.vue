@@ -222,7 +222,7 @@ function handleClickClose() {
     emit('cancel');
 }
 
-async function handleClickOk() {
+function handleClickOk() {
     if (submitButton.value) {
         submitButton.value.click();
     }

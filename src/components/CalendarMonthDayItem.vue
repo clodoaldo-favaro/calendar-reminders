@@ -44,7 +44,7 @@ const label = computed(() => {
 });
 
 const reminders = computed(() => {
-    return store.getRemindersByDateSortedByTime(props.day.dateJs);
+    return store.getRemindersByDateSortedByTime(props.day.dateJs).slice(0, 3);
 })
 
 const SATURDAY = 6;
