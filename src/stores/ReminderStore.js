@@ -1,3 +1,4 @@
+import { locale } from 'dayjs'
 import { defineStore } from 'pinia'
 
 export const useReminderStore = defineStore('reminders', {
@@ -75,13 +76,14 @@ export const useReminderStore = defineStore('reminders', {
 			}
 		},
 		async getWeatherInfo(city, date) {
-			debugger
 			let url
 
+			let units = navigator.language === 'en-US' ? 'imperial' : 'metric'
+
 			if (city.countryCode === 'US') {
-				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.stateCode},${city.countryCode}`
+				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.stateCode},${city.countryCode}&units=${units}`
 			} else {
-				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.countryCode}`
+				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.countryCode}&units=${units}`
 			}
 
 			url += '&appid=4d75313d4c53abfca0f9e78c3888260b'
@@ -97,7 +99,7 @@ export const useReminderStore = defineStore('reminders', {
 						weatherDataDate.getMonth() === date.getMonth() &&
 						weatherDataDate.getFullYear() === date.getFullYear()
 					)
-				})
+				})[0]
 			} else {
 				return null
 			}

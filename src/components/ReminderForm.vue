@@ -61,6 +61,25 @@
 
                 <button type="submit" ref="submitButton" id="submitButton"></button>
             </form>
+
+            <div v-if="weatherInfo && !isLoadingWeatherInfo" class="weather-info">
+                <h2>Weather</h2>
+                <div class="weather-summary">
+                    <h3>{{ weatherInfo.weather[0].main }}</h3>
+                    <img :src="`http://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}.png`" />
+                </div>
+                <div class="weather-details">
+                    <span>Temperature: {{ weatherInfo.main.temp }}{{ tempUnit }}</span>
+                    <span>Feels like: {{ weatherInfo.main.feels_like }}{{ tempUnit }}</span>
+                    <span>Humidity: {{ weatherInfo.main.humidity }}%</span>
+                    <span>Wind: {{ weatherInfo.wind.speed }}{{ speedUnit }}</span>
+                </div>
+            </div>
+            <div class="loading-weather-info" v-if="isLoadingWeatherInfo">
+                <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" animationDuration=" .5s"
+                    aria-label="Custom ProgressSpinner" />
+                <span>Loading weather info...</span>
+            </div>
         </template>
     </SlideIn>
 </template>
@@ -76,6 +95,7 @@ import InputText from 'primevue/inputtext';
 import CascadeSelect from 'primevue/cascadeselect';
 import Calendar from 'primevue/calendar';
 import ColorPicker from 'primevue/colorpicker';
+import ProgressSpinner from 'primevue/progressspinner';
 import SlideIn from './SlideIn.vue';
 import { useToast } from "primevue/usetoast";
 import { useReminderStore } from '../stores/ReminderStore';
@@ -168,25 +188,33 @@ const time = defineComponentBinds('time');
 const city = defineComponentBinds('city');
 const color = defineComponentBinds('color');
 
-const showWeather = ref(false);
 const weatherInfo = ref(null);
+const isLoadingWeatherInfo = ref(false);
 
-onMounted(() => {
-    debugger;
+const tempUnit = computed(() => {
+    return navigator.language === 'en-US' ? 'ºF' : 'ºC';
+});
+
+const speedUnit = computed(() => {
+    return navigator.language === 'en-US' ? 'mph' : 'km/h';
+});
+
+onMounted(async () => {
     if (values.date && values.city) {
-        showWeather.value = true;
+        isLoadingWeatherInfo.value = true;
+        weatherInfo.value = await store.getWeatherInfo(values.city, values.date);
+        isLoadingWeatherInfo.value = false;
     }
 })
 
 watch([() => values.date, () => values.city], async ([newDate, newCity]) => {
-    debugger;
     if (newDate && newCity) {
-        console.log(newDate);
-        console.log(newCity);
+        isLoadingWeatherInfo.value = true;
         weatherInfo.value = await store.getWeatherInfo(newCity, newDate);
     } else {
-        showWeather.value = false;
+        weatherInfo.value = null;
     }
+    isLoadingWeatherInfo.value = false;
 });
 
 const colorPicker = ref(props?.reminder?.color || '000000');
@@ -364,5 +392,39 @@ form {
     align-items: center;
     gap: 12px;
     margin-top: 32px;
+}
+
+.weather-info {
+    margin-top: 12px;
+    background-color: var(--gray-200);
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    color: var(--gray-600);
+}
+
+.loading-weather-info {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.weather-info h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.weather-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 </style>
