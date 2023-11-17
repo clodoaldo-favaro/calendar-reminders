@@ -12,7 +12,6 @@
             <CalendarMonthDayItem v-for="day in days" :key="day.date" :day="day" :is-today="day.date === today"
                 @click="openReminderFormWithSelectedDate(day.dateJs)" />
         </ol>
-
     </div>
 
     <ReminderForm v-if="isReminderFormVisible" @cancel="hideReminderForm" @confirm="hideReminderForm"

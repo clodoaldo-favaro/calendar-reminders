@@ -1,16 +1,25 @@
 <template>
-    <SlideIn :title="label" @onClickCancel="handleClickCancel" @onClickOk="handleClickOk" @onClickClose="handleClickClose">
+    <SlideIn :title="label" hideFooter="true" @onClickClose="handleClickClose">
         <template v-slot:main>
             <h2>Reminders</h2>
             <ol class="reminders">
-                <li v-for="reminder in reminders" :key="reminder.id"
-                    @click="openReminderFormWithSelectedReminder(reminder)">
-                    <span>
-                        {{ dayjs(reminder.date).format('HH:mm') }}
-                    </span>
-                    <span :style="{ color: `#${reminder.color}` }">
-                        {{ reminder.description }}
-                    </span>
+                <li v-for="reminder in reminders" :key="reminder.id">
+                    <div>
+                        <span>
+                            {{ dayjs(reminder.date).format('HH:mm') }}
+                        </span>
+                        <span :style="{ color: `#${reminder.color}` }">
+                            {{ reminder.description }}
+                        </span>
+                    </div>
+                    <div>
+                        <Button @click="openReminderFormWithSelectedReminder(reminder)" icon="pi pi-pencil"
+                            aria-label="Edit" outlined severity="info" text title="Edit" />
+
+                        <Button @click="openReminderFormWithSelectedReminder(reminder)" icon="pi pi-trash"
+                            aria-label="Delete" outlined severity="danger" text title="Delete" />
+
+                    </div>
                 </li>
             </ol>
         </template>
@@ -26,6 +35,7 @@ import { computed, ref } from "vue";
 import { useReminderStore } from "../stores/ReminderStore";
 import SlideIn from "./SlideIn.vue";
 import ReminderForm from "./ReminderForm.vue";
+import Button from "primevue/button";
 
 const emit = defineEmits(['confirm', 'cancel']);
 const store = useReminderStore();
@@ -95,19 +105,29 @@ ol {
 
 ol li {
     display: flex;
-    gap: 16px;
+    justify-content: space-between;
+    align-items: center;
     font-weight: bold;
-    cursor: pointer;
     font-size: 14px;
     padding: 16px;
     border-radius: var(--border-radius);
 }
 
-ol li:nth-child(2n + 1) {
-    background-color: var(--gray-100);
+ol li>div {
+    display: flex;
+    align-items: center;
 }
 
-ol li span:first-child {
+ol li>div:first-child {
+    gap: 8px;
+}
+
+ol li:nth-child(2n + 1) {
+    background-color: var(--gray-050);
+}
+
+ol li div:first-child span:first-child {
     color: var(--gray-600);
+    font-weight: normal;
 }
 </style>
