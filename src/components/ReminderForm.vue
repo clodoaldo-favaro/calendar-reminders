@@ -304,6 +304,60 @@ const countries = ref([
         ]
     },
     {
+        name: 'Brazil',
+        code: 'BR',
+        states: [
+            {
+                name: 'São Paulo',
+                cities: [
+                    { cname: 'São Paulo', countryCode: 'BR', stateCode: 'SP' },
+                    { cname: 'Campinas', countryCode: 'BR', stateCode: 'SP' }
+                ]
+            },
+            {
+                name: 'Rio de Janeiro',
+                cities: [
+                    { cname: 'Rio de Janeiro', countryCode: 'BR', stateCode: 'RJ' },
+                    { cname: 'Niterói', countryCode: 'BR', stateCode: 'RJ' }
+                ]
+            },
+            {
+                name: 'Minas Gerais',
+                cities: [
+                    { cname: 'Belo Horizonte', countryCode: 'BR', stateCode: 'MG' },
+                    { cname: 'Uberlândia', countryCode: 'BR', stateCode: 'MG' }
+                ]
+            },
+            {
+                name: 'Bahia',
+                cities: [
+                    { cname: 'Salvador', countryCode: 'BR', stateCode: 'BA' },
+                    { cname: 'Vitória da Conquista', countryCode: 'BR', stateCode: 'BA' }
+                ]
+            },
+            {
+                name: 'Paraná',
+                cities: [
+                    { cname: 'Curitiba', countryCode: 'BR', stateCode: 'PR' },
+                    { cname: 'Londrina', countryCode: 'BR', stateCode: 'PR' }
+                ]
+            },
+            {
+                name: 'Rio Grande do Sul',
+                cities: [
+                    { cname: 'Porto Alegre', countryCode: 'BR', stateCode: 'RS' },
+                    { cname: 'Pelotas', countryCode: 'BR', stateCode: 'RS' },
+                    { cname: 'Caxias do Sul', countryCode: 'BR', stateCode: 'RS' },
+                    { cname: 'Santa Maria', countryCode: 'BR', stateCode: 'RS' },
+                    { cname: 'Rio Grande', countryCode: 'BR', stateCode: 'RS' },
+                    { cname: 'Passo Fundo', countryCode: 'BR', stateCode: 'RS' },
+                    { cname: 'Bento Gonçalves', countryCode: 'BR', stateCode: 'RS' },
+                    { cname: 'Farroupilha', countryCode: 'BR', stateCode: 'RS' }
+                ]
+            }
+        ]
+    },
+    {
         name: 'Canada',
         code: 'CA',
         states: [

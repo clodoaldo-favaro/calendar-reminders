@@ -37,7 +37,7 @@
             </template>
             <template v-else>
                 <h2>No reminders yet</h2>
-                <p>Tip: Create a reminder to add a new reminder</p>
+                <p>Tip: Create a reminder to remind yourself to add a new reminder</p>
             </template>
         </template>
     </SlideIn>
@@ -148,6 +148,10 @@ function handleClickClose() {
 <style scoped>
 h2 {
     font-size: 16px;
+    color: var(--gray-600);
+}
+
+p {
     color: var(--gray-600);
 }
 
