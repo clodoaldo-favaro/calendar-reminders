@@ -77,6 +77,7 @@ export const useReminderStore = defineStore('reminders', {
 			this.reminders = []
 		},
 		async getWeatherInfo(city, date) {
+			debugger
 			let url
 
 			let units = navigator.language === 'en-US' ? 'imperial' : 'metric'

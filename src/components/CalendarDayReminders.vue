@@ -1,5 +1,5 @@
 <template>
-    <SlideIn :title="label" hideFooter="true" @onClickClose="handleClickClose">
+    <SlideIn :title="label" hideFooter @onClickClose="handleClickClose">
         <template v-slot:main>
             <template v-if="reminders.length">
                 <h2>Reminders</h2>
@@ -53,6 +53,9 @@ import { useReminderStore } from "../stores/ReminderStore";
 import SlideIn from "./SlideIn.vue";
 import ReminderForm from "./ReminderForm.vue";
 import Button from "primevue/button";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+
 
 const emit = defineEmits(['confirm', 'cancel']);
 const store = useReminderStore();
@@ -67,6 +70,9 @@ const props = defineProps({
 const selectedReminder = ref(null);
 const isReminderFormVisible = ref(false);
 
+const confirm = useConfirm();
+const toast = useToast();
+
 function openReminderForm() {
     selectedReminder.value = null;
     showReminderForm();
@@ -78,11 +84,33 @@ function openReminderFormWithSelectedReminder(reminder) {
 }
 
 function removeReminder(reminderId) {
-    store.removeReminder(reminderId);
+    confirm.require({
+        message: "Are you sure you want to delete this reminder?",
+        accept: () => {
+            store.removeReminderById(reminderId);
+            toast.add({
+                severity: "success",
+                summary: "Success",
+                detail: "Reminder deleted",
+                life: 3000,
+            });
+        },
+    });
 }
 
 function removeAll() {
-    store.removeAllReminders();
+    confirm.require({
+        message: "Are you sure you want to delete all reminders?",
+        accept: () => {
+            store.removeAllReminders();
+            toast.add({
+                severity: "success",
+                summary: "Success",
+                detail: "All reminders deleted",
+                life: 3000,
+            });
+        }
+    });
 }
 
 
@@ -103,19 +131,9 @@ const reminders = computed(() => {
     return store.getRemindersByDateSortedByTime(props.selectedDate);
 })
 
-function handleClickCancel() {
-    emit('cancel');
-}
-
 function handleClickClose() {
     emit('cancel');
 }
-
-function handleClickOk() {
-
-}
-
-
 
 </script>
 
