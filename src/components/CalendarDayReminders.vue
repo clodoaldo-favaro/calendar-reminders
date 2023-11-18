@@ -1,5 +1,6 @@
 <template>
-    <SlideIn :title="label" hideFooter @onClickClose="handleClickClose">
+    <SlideIn :title="label" hide-cancel-button text-ok-button="+ Add Reminder" @onClickClose="handleClickClose"
+        @onClickOk="openReminderForm">
         <template v-slot:main>
             <template v-if="reminders.length">
                 <h2>Reminders</h2>
@@ -36,9 +37,8 @@
             </template>
             <template v-else>
                 <h2>No reminders yet</h2>
-                <Button type="button" label="+ Add reminder" @click="openReminderForm" />
+                <p>Tip: Create a reminder to add a new reminder</p>
             </template>
-
         </template>
     </SlideIn>
 
