@@ -27,8 +27,8 @@ export const useReminderStore = defineStore('reminders', {
 							return 1
 						}
 
-						const descriptionA = reminderA.toUpperCase()
-						const descriptionB = reminderB.toUpperCase()
+						const descriptionA = reminderA.description.toUpperCase()
+						const descriptionB = reminderB.description.toUpperCase()
 
 						if (descriptionA < descriptionB) {
 							return -1
