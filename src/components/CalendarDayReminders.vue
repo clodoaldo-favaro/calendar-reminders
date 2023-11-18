@@ -101,6 +101,10 @@ function removeReminder(reminderId) {
 function removeAll() {
     confirm.require({
         message: "Are you sure you want to delete all reminders?",
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        rejectClass: 'p-button-text p-button-text',
+        acceptClass: 'p-button-danger p-button-text',
         accept: () => {
             store.removeAllReminders();
             toast.add({

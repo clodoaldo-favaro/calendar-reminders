@@ -200,7 +200,6 @@ const speedUnit = computed(() => {
 });
 
 onMounted(async () => {
-    debugger;
     if (values.date && values.city) {
         isLoadingWeatherInfo.value = true;
         weatherInfo.value = await store.getWeatherInfo(values.city, values.date);
@@ -209,7 +208,6 @@ onMounted(async () => {
 })
 
 watch([() => values.date, () => values.city], async ([newDate, newCity]) => {
-    debugger
     if (newDate && newCity) {
         isLoadingWeatherInfo.value = true;
         weatherInfo.value = await store.getWeatherInfo(newCity, newDate);

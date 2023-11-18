@@ -1,4 +1,3 @@
-import { locale } from 'dayjs'
 import { defineStore } from 'pinia'
 
 export const useReminderStore = defineStore('reminders', {
@@ -77,7 +76,6 @@ export const useReminderStore = defineStore('reminders', {
 			this.reminders = []
 		},
 		async getWeatherInfo(city, date) {
-			debugger
 			let url
 
 			let units = navigator.language === 'en-US' ? 'imperial' : 'metric'
@@ -94,7 +92,7 @@ export const useReminderStore = defineStore('reminders', {
 			const weatherDataJson = await weatherData.json()
 
 			if (weatherDataJson.cod === '200') {
-				return weatherDataJson.list.filter((weatherData) => {
+				weatherDataJson.list.filter((weatherData) => {
 					const weatherDataDate = new Date(weatherData.dt * 1000)
 					return (
 						weatherDataDate.getDate() === date.getDate() &&
