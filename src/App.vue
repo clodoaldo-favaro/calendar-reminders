@@ -1,5 +1,6 @@
 <template>
     <Toast />
+    <ConfirmDialog></ConfirmDialog>
     <CalendarMonth />
 </template>
 

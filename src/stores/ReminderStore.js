@@ -61,7 +61,7 @@ export const useReminderStore = defineStore('reminders', {
 				console.log(this.reminders[reminderIndex])
 			}
 		},
-		removeReminder(reminderId) {
+		removeReminderById(reminderId) {
 			const reminderIndex = this.reminders.findIndex(
 				(reminder) => reminder.id === reminderId
 			)

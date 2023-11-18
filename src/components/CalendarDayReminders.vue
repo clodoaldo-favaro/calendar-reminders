@@ -86,6 +86,10 @@ function openReminderFormWithSelectedReminder(reminder) {
 function removeReminder(reminderId) {
     confirm.require({
         message: "Are you sure you want to delete this reminder?",
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        rejectClass: 'p-button-text p-button-text',
+        acceptClass: 'p-button-danger p-button-text',
         accept: () => {
             store.removeReminderById(reminderId);
             toast.add({
@@ -113,7 +117,7 @@ function removeAll() {
                 detail: "All reminders deleted",
                 life: 3000,
             });
-        }
+        },
     });
 }
 
