@@ -1,30 +1,44 @@
 <template>
     <SlideIn :title="label" hideFooter="true" @onClickClose="handleClickClose">
         <template v-slot:main>
-            <h2>Reminders</h2>
-            <ol class="reminders">
-                <li v-for="reminder in reminders" :key="reminder.id">
-                    <div>
-                        <span>
-                            {{ dayjs(reminder.date).format('HH:mm') }}
-                        </span>
-                        <span :style="{ color: `#${reminder.color}` }">
-                            {{ reminder.description }}
-                        </span>
-                        <span>
-                            {{ reminder.city }}
-                        </span>
-                    </div>
-                    <div>
-                        <Button @click="openReminderFormWithSelectedReminder(reminder)" icon="pi pi-pencil"
-                            aria-label="Edit" outlined severity="info" text title="Edit" />
+            <template v-if="reminders.length">
+                <h2>Reminders</h2>
+                <div class="remove-all-container">
+                    <span>Remove all</span>
+                    <Button @click="removeAll()" icon="pi pi-trash" aria-label="Delete" outlined severity="danger" text
+                        title="Delete" />
+                </div>
 
-                        <Button @click="removeReminder(reminder.id)" icon="pi pi-trash" aria-label="Delete" outlined
-                            severity="danger" text title="Delete" />
+                <ol class="reminders">
+                    <li v-for="reminder in reminders" :key="reminder.id">
+                        <div>
+                            <span>
+                                {{ dayjs(reminder.date).format('HH:mm') }}
+                            </span>
+                            <span :style="{ color: `#${reminder.color}` }">
+                                {{ reminder.description }}
+                            </span>
+                            <span>
+                                {{ reminder.city.cname }}
+                            </span>
+                        </div>
+                        <div>
+                            <Button @click="openReminderFormWithSelectedReminder(reminder)" icon="pi pi-pencil"
+                                aria-label="Edit" outlined severity="info" text title="Edit" />
 
-                    </div>
-                </li>
-            </ol>
+                            <Button @click="removeReminder(reminder.id)" icon="pi pi-trash" aria-label="Delete" outlined
+                                severity="danger" text title="Delete" />
+
+                        </div>
+                    </li>
+                </ol>
+
+            </template>
+            <template v-else>
+                <h2>No reminders yet</h2>
+                <Button type="button" label="+ Add reminder" @click="openReminderForm" />
+            </template>
+
         </template>
     </SlideIn>
 
@@ -53,14 +67,22 @@ const props = defineProps({
 const selectedReminder = ref(null);
 const isReminderFormVisible = ref(false);
 
+function openReminderForm() {
+    selectedReminder.value = null;
+    showReminderForm();
+}
+
 function openReminderFormWithSelectedReminder(reminder) {
     selectedReminder.value = reminder;
     showReminderForm();
 }
 
 function removeReminder(reminderId) {
-    debugger;
     store.removeReminder(reminderId);
+}
+
+function removeAll() {
+    store.removeAllReminders();
 }
 
 
@@ -78,7 +100,6 @@ const label = computed(() => {
 });
 
 const reminders = computed(() => {
-    debugger;
     return store.getRemindersByDateSortedByTime(props.selectedDate);
 })
 
@@ -136,5 +157,16 @@ ol li:nth-child(2n + 1) {
 ol li div:first-child span:first-child {
     color: var(--gray-600);
     font-weight: normal;
+}
+
+.remove-all-container>button {
+    margin-top: -2px;
+}
+
+.remove-all-container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 16px;
 }
 </style>

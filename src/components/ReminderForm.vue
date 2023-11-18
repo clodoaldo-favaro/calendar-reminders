@@ -236,7 +236,6 @@ const formTitle = computed(() => {
 });
 
 const onSubmit = handleSubmit((values) => {
-    debugger;
     let date = dayjs(values.date);
     let time = values.time;
 

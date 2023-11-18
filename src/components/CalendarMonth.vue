@@ -44,7 +44,6 @@ let selectedDate = ref(dayjs());
 let selectedDateFromCalendar = ref(new Date())
 
 function openReminderFormWithSelectedDate(date) {
-    debugger;
     selectedDateFromCalendar.value = date;
 
     const reminders = store.getRemindersByDateSortedByTime(date);

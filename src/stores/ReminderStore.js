@@ -50,7 +50,6 @@ export const useReminderStore = defineStore('reminders', {
 			this.reminders.push(reminder)
 		},
 		updateReminder(reminderId, reminderData) {
-			debugger
 			const reminderIndex = this.reminders.findIndex(
 				(reminder) => reminder.id === reminderId
 			)
@@ -64,7 +63,6 @@ export const useReminderStore = defineStore('reminders', {
 			}
 		},
 		removeReminder(reminderId) {
-			debugger
 			const reminderIndex = this.reminders.findIndex(
 				(reminder) => reminder.id === reminderId
 			)
@@ -74,6 +72,9 @@ export const useReminderStore = defineStore('reminders', {
 					(reminder) => reminder.id != reminderId
 				)
 			}
+		},
+		removeAllReminders() {
+			this.reminders = []
 		},
 		async getWeatherInfo(city, date) {
 			let url
