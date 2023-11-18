@@ -20,7 +20,7 @@
     <CalendarDayReminders v-if="isCalendarDayRemindersVisible" @cancel="hideCalendarReminders"
         @confirm="showCalendarReminders" :selected-date="selectedDateFromCalendar" />
 
-    <Button type="button" label="+ Add reminder" @click="showReminderForm" />
+    <Button ref="addReminderButton" type="button" label="+ Add reminder" @click="showReminderForm" />
 </template >
 
 <script setup >

@@ -17,7 +17,7 @@
 
                     <div>
                         <span class="p-float-label">
-                            <Calendar v-bind="date" showIcon :class="{ 'p-invalid': errors.date }" />
+                            <Calendar id="date" v-bind="date" showIcon :class="{ 'p-invalid': errors.date }" />
                             <label for="date">Date</label>
                         </span>
                         <small id="date-error" class="p-error">
@@ -27,7 +27,7 @@
 
                     <div>
                         <span class="p-float-label">
-                            <Calendar v-bind="time" timeOnly />
+                            <Calendar id="time" v-bind="time" timeOnly />
                             <label for="time">Time</label>
                         </span>
                         <small id="time-error" class="p-error">
@@ -37,7 +37,7 @@
 
                     <div class="city-select-container">
                         <span class="p-float-label">
-                            <CascadeSelect v-bind="city" append-to="self" :class="{ 'p-invalid': errors.city }"
+                            <CascadeSelect id="city" v-bind="city" append-to="self" :class="{ 'p-invalid': errors.city }"
                                 :options="countries" optionLabel="cname" optionGroupLabel="name"
                                 :optionGroupChildren="['states', 'cities']" style="min-width: 14rem"
                                 placeholder="Select a City" aria-describedby="cc-error" />
