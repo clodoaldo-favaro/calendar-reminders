@@ -92,8 +92,9 @@ export const useReminderStore = defineStore('reminders', {
 			const weatherDataJson = await weatherData.json()
 
 			if (weatherDataJson.cod === '200') {
-				weatherDataJson.list.filter((weatherData) => {
+				return weatherDataJson.list.filter((weatherData) => {
 					const weatherDataDate = new Date(weatherData.dt * 1000)
+
 					return (
 						weatherDataDate.getDate() === date.getDate() &&
 						weatherDataDate.getMonth() === date.getMonth() &&
