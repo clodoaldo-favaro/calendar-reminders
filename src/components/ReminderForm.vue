@@ -37,7 +37,7 @@
                         </small>
                     </div>
 
-                    <div class="city-select-container">
+                    <div class="city-select-wrapper">
                         <span class="p-float-label">
                             <BaseCascadeSelect id="city" name="city" append-to="self" :class="{ 'p-invalid': errors.city }"
                                 :options="countries" optionLabel="cityName" optionGroupLabel="name"
@@ -45,7 +45,7 @@
                                 placeholder="Select a City" aria-describedby="city-error" />
                             <label for="city">City</label>
                         </span>
-                        <small id="city-error" class="city-error">{{ errors.city }}</small>
+                        <small id="city-error" class="p-error">{{ errors.city }}</small>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
             </div>
             <div class="loading-weather-info" v-if="isLoadingWeatherInfo">
                 <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" animationDuration=" .5s"
-                    aria-label="Custom ProgressSpinner" />
+                    aria-label="Loading weather info" />
                 <span>Loading weather info...</span>
             </div>
         </template>
@@ -428,7 +428,7 @@ form {
     align-items: start;
 }
 
-.city-select-container {
+.city-select-wrapper {
     flex-basis: 100%;
 }
 
