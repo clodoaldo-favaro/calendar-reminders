@@ -40,7 +40,7 @@
                     <div class="city-select-container">
                         <span class="p-float-label">
                             <BaseCascadeSelect id="city" name="city" append-to="self" :class="{ 'p-invalid': errors.city }"
-                                :options="countries" optionLabel="cname" optionGroupLabel="name"
+                                :options="countries" optionLabel="cityName" optionGroupLabel="name"
                                 :optionGroupChildren="['states', 'cities']" style="min-width: 14rem"
                                 placeholder="Select a City" aria-describedby="city-error" />
                             <label for="city">City</label>
@@ -120,7 +120,17 @@ const schema = toTypedSchema(
 
             return yup.mixed().required();
         }),
-        city: yup.object().required().label('City'),
+        city: yup.lazy(value => {
+            if (typeof value === 'string') {
+                return yup.string().required().label('City');
+            }
+
+            return yup.object({
+                cityName: yup.string().required().label('City'),
+                countryCode: yup.string().required().label('Country Code'),
+                stateCode: yup.string().required().label('State Code')
+            })
+        }),
         color: yup.string().required().matches(/^([0-9a-f]{6})$/i).label('Color')
     })
 )
@@ -275,16 +285,16 @@ const countries = ref([
             {
                 name: 'New South Wales',
                 cities: [
-                    { cname: 'Sydney', countryCode: 'AU', stateCode: 'NSW' },
-                    { cname: 'Newcastle', countryCode: 'AU', stateCode: 'NSW' },
-                    { cname: 'Wollongong', countryCode: 'AU', stateCode: 'NSW' }
+                    { cityName: 'Sydney', countryCode: 'AU', stateCode: 'NSW' },
+                    { cityName: 'Newcastle', countryCode: 'AU', stateCode: 'NSW' },
+                    { cityName: 'Wollongong', countryCode: 'AU', stateCode: 'NSW' }
                 ]
             },
             {
                 name: 'Queensland',
                 cities: [
-                    { cname: 'Brisbane', countryCode: 'AU', stateCode: 'QLD' },
-                    { cname: 'Townsville', countryCode: 'AU', stateCode: 'QLD' }
+                    { cityName: 'Brisbane', countryCode: 'AU', stateCode: 'QLD' },
+                    { cityName: 'Townsville', countryCode: 'AU', stateCode: 'QLD' }
                 ]
             }
         ]
@@ -296,49 +306,49 @@ const countries = ref([
             {
                 name: 'São Paulo',
                 cities: [
-                    { cname: 'São Paulo', countryCode: 'BR', stateCode: 'SP' },
-                    { cname: 'Campinas', countryCode: 'BR', stateCode: 'SP' }
+                    { cityName: 'São Paulo', countryCode: 'BR', stateCode: 'SP' },
+                    { cityName: 'Campinas', countryCode: 'BR', stateCode: 'SP' }
                 ]
             },
             {
                 name: 'Rio de Janeiro',
                 cities: [
-                    { cname: 'Rio de Janeiro', countryCode: 'BR', stateCode: 'RJ' },
-                    { cname: 'Niterói', countryCode: 'BR', stateCode: 'RJ' }
+                    { cityName: 'Rio de Janeiro', countryCode: 'BR', stateCode: 'RJ' },
+                    { cityName: 'Niterói', countryCode: 'BR', stateCode: 'RJ' }
                 ]
             },
             {
                 name: 'Minas Gerais',
                 cities: [
-                    { cname: 'Belo Horizonte', countryCode: 'BR', stateCode: 'MG' },
-                    { cname: 'Uberlândia', countryCode: 'BR', stateCode: 'MG' }
+                    { cityName: 'Belo Horizonte', countryCode: 'BR', stateCode: 'MG' },
+                    { cityName: 'Uberlândia', countryCode: 'BR', stateCode: 'MG' }
                 ]
             },
             {
                 name: 'Bahia',
                 cities: [
-                    { cname: 'Salvador', countryCode: 'BR', stateCode: 'BA' },
-                    { cname: 'Vitória da Conquista', countryCode: 'BR', stateCode: 'BA' }
+                    { cityName: 'Salvador', countryCode: 'BR', stateCode: 'BA' },
+                    { cityName: 'Vitória da Conquista', countryCode: 'BR', stateCode: 'BA' }
                 ]
             },
             {
                 name: 'Paraná',
                 cities: [
-                    { cname: 'Curitiba', countryCode: 'BR', stateCode: 'PR' },
-                    { cname: 'Londrina', countryCode: 'BR', stateCode: 'PR' }
+                    { cityName: 'Curitiba', countryCode: 'BR', stateCode: 'PR' },
+                    { cityName: 'Londrina', countryCode: 'BR', stateCode: 'PR' }
                 ]
             },
             {
                 name: 'Rio Grande do Sul',
                 cities: [
-                    { cname: 'Porto Alegre', countryCode: 'BR', stateCode: 'RS' },
-                    { cname: 'Pelotas', countryCode: 'BR', stateCode: 'RS' },
-                    { cname: 'Caxias do Sul', countryCode: 'BR', stateCode: 'RS' },
-                    { cname: 'Santa Maria', countryCode: 'BR', stateCode: 'RS' },
-                    { cname: 'Rio Grande', countryCode: 'BR', stateCode: 'RS' },
-                    { cname: 'Passo Fundo', countryCode: 'BR', stateCode: 'RS' },
-                    { cname: 'Bento Gonçalves', countryCode: 'BR', stateCode: 'RS' },
-                    { cname: 'Farroupilha', countryCode: 'BR', stateCode: 'RS' }
+                    { cityName: 'Porto Alegre', countryCode: 'BR', stateCode: 'RS' },
+                    { cityName: 'Pelotas', countryCode: 'BR', stateCode: 'RS' },
+                    { cityName: 'Caxias do Sul', countryCode: 'BR', stateCode: 'RS' },
+                    { cityName: 'Santa Maria', countryCode: 'BR', stateCode: 'RS' },
+                    { cityName: 'Rio Grande', countryCode: 'BR', stateCode: 'RS' },
+                    { cityName: 'Passo Fundo', countryCode: 'BR', stateCode: 'RS' },
+                    { cityName: 'Bento Gonçalves', countryCode: 'BR', stateCode: 'RS' },
+                    { cityName: 'Farroupilha', countryCode: 'BR', stateCode: 'RS' }
                 ]
             }
         ]
@@ -350,15 +360,15 @@ const countries = ref([
             {
                 name: 'Quebec',
                 cities: [
-                    { cname: 'Montreal', countryCode: 'CA', stateCode: 'QC' },
-                    { cname: 'Quebec City', countryCode: 'CA', stateCode: 'QC' }
+                    { cityName: 'Montreal', countryCode: 'CA', stateCode: 'QC' },
+                    { cityName: 'Quebec City', countryCode: 'CA', stateCode: 'QC' }
                 ]
             },
             {
                 name: 'Ontario',
                 cities: [
-                    { cname: 'Ottawa', countryCode: 'CA', stateCode: 'ON' },
-                    { cname: 'Toronto', countryCode: 'CA', stateCode: 'ON' }
+                    { cityName: 'Ottawa', countryCode: 'CA', stateCode: 'ON' },
+                    { cityName: 'Toronto', countryCode: 'CA', stateCode: 'ON' }
                 ]
             }
         ]
@@ -370,26 +380,26 @@ const countries = ref([
             {
                 name: 'California',
                 cities: [
-                    { cname: 'Los Angeles', countryCode: 'US', stateCode: 'CA' },
-                    { cname: 'San Diego', countryCode: 'US', stateCode: 'CA' },
-                    { cname: 'San Francisco', countryCode: 'US', stateCode: 'CA' }
+                    { cityName: 'Los Angeles', countryCode: 'US', stateCode: 'CA' },
+                    { cityName: 'San Diego', countryCode: 'US', stateCode: 'CA' },
+                    { cityName: 'San Francisco', countryCode: 'US', stateCode: 'CA' }
                 ]
             },
             {
                 name: 'Florida',
                 cities: [
-                    { cname: 'Jacksonville', countryCode: 'US', stateCode: 'FL' },
-                    { cname: 'Miami', countryCode: 'US', stateCode: 'FL' },
-                    { cname: 'Tampa', countryCode: 'US', stateCode: 'FL' },
-                    { cname: 'Orlando', countryCode: 'US', stateCode: 'FL' }
+                    { cityName: 'Jacksonville', countryCode: 'US', stateCode: 'FL' },
+                    { cityName: 'Miami', countryCode: 'US', stateCode: 'FL' },
+                    { cityName: 'Tampa', countryCode: 'US', stateCode: 'FL' },
+                    { cityName: 'Orlando', countryCode: 'US', stateCode: 'FL' }
                 ]
             },
             {
                 name: 'Texas',
                 cities: [
-                    { cname: 'Austin', countryCode: 'US', stateCode: 'TX' },
-                    { cname: 'Dallas', countryCode: 'US', stateCode: 'TX' },
-                    { cname: 'Houston', countryCode: 'US', stateCode: 'TX' }
+                    { cityName: 'Austin', countryCode: 'US', stateCode: 'TX' },
+                    { cityName: 'Dallas', countryCode: 'US', stateCode: 'TX' },
+                    { cityName: 'Houston', countryCode: 'US', stateCode: 'TX' }
                 ]
             }
         ]

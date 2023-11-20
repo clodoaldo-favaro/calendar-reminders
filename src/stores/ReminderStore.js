@@ -81,9 +81,9 @@ export const useReminderStore = defineStore('reminders', {
 			let units = navigator.language === 'en-US' ? 'imperial' : 'metric'
 
 			if (city.countryCode === 'US') {
-				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.stateCode},${city.countryCode}&units=${units}`
+				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cityName},${city.stateCode},${city.countryCode}&units=${units}`
 			} else {
-				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cname},${city.countryCode}&units=${units}`
+				url = `https://api.openweathermap.org/data/2.5/forecast?q=${city.cityName},${city.countryCode}&units=${units}`
 			}
 
 			url += '&appid=4d75313d4c53abfca0f9e78c3888260b'
