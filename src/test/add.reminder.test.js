@@ -45,7 +45,7 @@ test('reminder form mounts', async () => {
 	expect(reminderForm.exists()).toBe(true)
 })
 
-test('add new reminder without description will trigger error', async () => {
+test('cand add reminder', async () => {
 	const wrapper = mount(ReminderForm, {
 		plugins: [createTestingPinia({ stubActions: false })],
 		global: {

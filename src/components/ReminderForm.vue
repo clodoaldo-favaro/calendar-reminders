@@ -2,7 +2,7 @@
     <SlideIn :title="formTitle" @onClickCancel="handleClickCancel" @onClickOk="handleClickOk"
         @onClickClose="handleClickClose">
         <template v-slot:main>
-            <form id="myForm" @submit="onSubmit" ref="reminderForm">
+            <form id="myForm" @submit.prevent="onSubmit" ref="reminderForm">
                 <div class="flex-form">
                     <div>
                         <span class="p-float-label">
@@ -56,8 +56,6 @@
                         {{ errors.color }}
                     </small>
                 </div>
-
-                <button type="submit" ref="submitButton" id="submitButton"></button>
             </form>
 
             <div v-if="weatherInfo && !isLoadingWeatherInfo" class="weather-info">
@@ -103,6 +101,7 @@ dayjs.extend(LocalizedFormat)
 
 const toast = useToast();
 const store = useReminderStore()
+const reminderForm = ref<HTMLFormElement | null>(null);
 
 function showSuccessToast() {
     const detail = props.reminder ? 'Reminder updated' : 'Reminder added';
@@ -269,9 +268,7 @@ function handleClickClose() {
 }
 
 function handleClickOk() {
-    if (submitButton.value) {
-        submitButton.value.click();
-    }
+    reminderForm.value?.requestSubmit();
 }
 
 const countries = ref([
@@ -427,10 +424,6 @@ form {
 
 .city-select-wrapper {
     flex-basis: 100%;
-}
-
-#submitButton {
-    display: none;
 }
 
 .color-input-wrapper {
