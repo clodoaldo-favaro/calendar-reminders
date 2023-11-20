@@ -12,6 +12,7 @@
                 </span>
             </li>
         </ol>
+        <p class="show-more">{{ showMoreText }}</p>
     </li>
 </template>
 
@@ -44,7 +45,17 @@ const label = computed(() => {
 });
 
 const reminders = computed(() => {
-    return store.getRemindersByDateSortedByTime(props.day.dateJs).slice(0, 3);
+    return store.getRemindersByDateSortedByTime(props.day.dateJs).slice(0, 2);
+})
+
+const showMoreText = computed(() => {
+    const remindersCount = store.getRemindersByDateSortedByTime(props.day.dateJs).length;
+    if (remindersCount > 2) {
+        debugger;
+        return `+ ${remindersCount - 2}`;
+    }
+
+    return '';
 })
 
 const SATURDAY = 6;
@@ -63,9 +74,13 @@ const isWeekend = computed(() => {
     font-size: 16px;
     background-color: #fff;
     color: var(--gray-800);
-    padding: 5px;
+    padding: 8px;
     cursor: pointer;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    max-height: 100px;
 }
 
 .calendar-day>span {
@@ -103,9 +118,15 @@ const isWeekend = computed(() => {
 ol.reminders-small {
     margin-top: 32px;
     font-size: 12px;
-    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.show-more {
+    position: absolute;
+    bottom: -8px;
+    font-size: 10px;
+    color: var(--blue-400);
 }
 </style>

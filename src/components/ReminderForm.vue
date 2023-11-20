@@ -169,8 +169,7 @@ function initialValuesReminder() {
             description: '',
             date: date.toDate(),
             time: date.format('HH:mm'),
-            city: '',
-            // color: '000000'
+            city: ''
         }
     }
 
@@ -180,12 +179,11 @@ function initialValuesReminder() {
         description: '',
         date: date.toDate(),
         time: date.format('HH:mm'),
-        city: '',
-        color: '000000'
+        city: ''
     }
 }
 
-const { handleSubmit, resetForm, setFieldValue, errors, values } = useForm({
+const { handleSubmit, resetForm, errors, values } = useForm({
     validationSchema: schema,
     initialValues: initialValuesReminder()
 });
@@ -256,7 +254,6 @@ const onSubmit = handleSubmit((values) => {
     } else {
         store.updateReminder(props.reminder.id, reminder);
     }
-
 
     resetForm();
     showSuccessToast();
