@@ -6,8 +6,8 @@
                 <div class="flex-form">
                     <div>
                         <span class="p-float-label">
-                            <InputText id="description" v-bind="description" type="text"
-                                :class="{ 'p-invalid': errors.description }" aria-describedby="text-error" />
+                            <BaseInputText name="description" id="description" :class="{ 'p-invalid': errors.description }"
+                                aria-describedby="text-error" />
                             <label for="description">Description</label>
                         </span>
                         <small id="description-error" class="p-error">
@@ -17,7 +17,7 @@
 
                     <div>
                         <span class="p-float-label">
-                            <Calendar id="date" v-bind="date" showIcon :class="{ 'p-invalid': errors.date }" />
+                            <BaseCalendar id="date" name="date" showIcon :class="{ 'p-invalid': errors.date }" />
                             <label for="date">Date</label>
                         </span>
                         <small id="date-error" class="p-error">
@@ -27,7 +27,7 @@
 
                     <div>
                         <span class="p-float-label">
-                            <Calendar id="time" v-bind="time" timeOnly />
+                            <BaseCalendar id="time" name="time" timeOnly :class="{ 'p-invalid': errors.time }" />
                             <label for="time">Time</label>
                         </span>
                         <small id="time-error" class="p-error">
@@ -47,13 +47,9 @@
                     </div>
                 </div>
 
-                <div class="color-container">
-                    <ColorPicker v-model="colorPicker" append-to="self" @update:model-value="updateColor" />
-                    <span class="p-float-label">
-                        <InputText disabled id="color" v-bind="color" :class="{ 'p-invalid': errors.color }"
-                            aria-describedby="text-error" />
-                        <label for="color">Color</label>
-                    </span>
+                <div class="color-input-wrapper">
+                    <label for="color">Reminder color</label>
+                    <BaseColorPicker name="color" append-to="self" />
                     <small id="color-error" class="p-error">
                         {{ errors.color }}
                     </small>
@@ -91,10 +87,10 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup'
-import InputText from 'primevue/inputtext';
 import CascadeSelect from 'primevue/cascadeselect';
-import Calendar from 'primevue/calendar';
-import ColorPicker from 'primevue/colorpicker';
+import BaseColorPicker from './inputs/BaseColorPicker.vue';
+import BaseInputText from './inputs/BaseInputText.vue';
+import BaseCalendar from './inputs/BaseCalendar.vue';
 import ProgressSpinner from 'primevue/progressspinner';
 import SlideIn from './SlideIn.vue';
 import { useToast } from "primevue/usetoast";
@@ -123,7 +119,7 @@ const schema = toTypedSchema(
             return yup.mixed().required();
         }),
         city: yup.object().required().label('City'),
-        color: yup.string().required().label('Color')
+        color: yup.string().required().matches(/^([0-9a-f]{6})$/i).label('Color')
     })
 )
 
@@ -162,7 +158,7 @@ function initialValuesReminder() {
             date: date.toDate(),
             time: date.format('HH:mm'),
             city: '',
-            color: '000000'
+            // color: '000000'
         }
     }
 
@@ -182,11 +178,7 @@ const { handleSubmit, resetForm, defineComponentBinds, setFieldValue, errors, va
     initialValues: initialValuesReminder()
 });
 
-const description = defineComponentBinds('description');
-const date = defineComponentBinds('date');
-const time = defineComponentBinds('time');
 const city = defineComponentBinds('city');
-const color = defineComponentBinds('color');
 
 const weatherInfo = ref(null);
 const isLoadingWeatherInfo = ref(false);
@@ -440,7 +432,7 @@ form {
     display: none;
 }
 
-.color-container {
+.color-input-wrapper {
     display: flex;
     align-items: center;
     gap: 12px;
