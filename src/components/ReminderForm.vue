@@ -6,8 +6,8 @@
                 <div class="flex-form">
                     <div>
                         <span class="p-float-label">
-                            <BaseInputText name="description" id="description" :class="{ 'p-invalid': errors.description }"
-                                aria-describedby="text-error" />
+                            <BaseInputText id="description" name="description" :class="{ 'p-invalid': errors.description }"
+                                aria-describedby="description-error" />
                             <label for="description">Description</label>
                         </span>
                         <small id="description-error" class="p-error">
@@ -17,7 +17,8 @@
 
                     <div>
                         <span class="p-float-label">
-                            <BaseCalendar id="date" name="date" showIcon :class="{ 'p-invalid': errors.date }" />
+                            <BaseCalendar id="date" name="date" showIcon :class="{ 'p-invalid': errors.date }"
+                                aria-describedby="date-error" />
                             <label for="date">Date</label>
                         </span>
                         <small id="date-error" class="p-error">
@@ -27,7 +28,8 @@
 
                     <div>
                         <span class="p-float-label">
-                            <BaseCalendar id="time" name="time" timeOnly :class="{ 'p-invalid': errors.time }" />
+                            <BaseCalendar id="time" name="time" timeOnly :class="{ 'p-invalid': errors.time }"
+                                aria-describedby="time-error" />
                             <label for="time">Time</label>
                         </span>
                         <small id="time-error" class="p-error">
@@ -37,19 +39,19 @@
 
                     <div class="city-select-container">
                         <span class="p-float-label">
-                            <CascadeSelect id="city" v-bind="city" append-to="self" :class="{ 'p-invalid': errors.city }"
+                            <BaseCascadeSelect id="city" name="city" append-to="self" :class="{ 'p-invalid': errors.city }"
                                 :options="countries" optionLabel="cname" optionGroupLabel="name"
                                 :optionGroupChildren="['states', 'cities']" style="min-width: 14rem"
-                                placeholder="Select a City" aria-describedby="cc-error" />
+                                placeholder="Select a City" aria-describedby="city-error" />
                             <label for="city">City</label>
                         </span>
-                        <small class="p-error" id="city-error">{{ errors.city }}</small>
+                        <small id="city-error" class="city-error">{{ errors.city }}</small>
                     </div>
                 </div>
 
                 <div class="color-input-wrapper">
                     <label for="color">Reminder color</label>
-                    <BaseColorPicker name="color" append-to="self" />
+                    <BaseColorPicker id="color" name="color" append-to="self" aria-describedby="color-error" />
                     <small id="color-error" class="p-error">
                         {{ errors.color }}
                     </small>
@@ -87,10 +89,10 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup'
-import CascadeSelect from 'primevue/cascadeselect';
 import BaseColorPicker from './inputs/BaseColorPicker.vue';
 import BaseInputText from './inputs/BaseInputText.vue';
 import BaseCalendar from './inputs/BaseCalendar.vue';
+import BaseCascadeSelect from './inputs/BaseCascadeSelect.vue';
 import ProgressSpinner from 'primevue/progressspinner';
 import SlideIn from './SlideIn.vue';
 import { useToast } from "primevue/usetoast";
@@ -173,12 +175,10 @@ function initialValuesReminder() {
     }
 }
 
-const { handleSubmit, resetForm, defineComponentBinds, setFieldValue, errors, values } = useForm({
+const { handleSubmit, resetForm, setFieldValue, errors, values } = useForm({
     validationSchema: schema,
     initialValues: initialValuesReminder()
 });
-
-const city = defineComponentBinds('city');
 
 const weatherInfo = ref(null);
 const isLoadingWeatherInfo = ref(false);
@@ -208,12 +208,6 @@ watch([() => values.date, () => values.city], async ([newDate, newCity]) => {
     }
     isLoadingWeatherInfo.value = false;
 });
-
-const colorPicker = ref(props?.reminder?.color || '000000');
-
-function updateColor(newColor) {
-    setFieldValue('color', newColor);
-}
 
 const submitButton = ref<HTMLButtonElement | null>(null);
 

@@ -1,10 +1,10 @@
 <template>
-    <ColorPicker v-model="value" aria-describedby="cp-error" />
+    <CascadeSelect v-model="value" />
 </template>
 
 <script setup>
 import { useField } from 'vee-validate';
-import ColorPicker from 'primevue/colorpicker';
+import CascadeSelect from 'primevue/cascadeselect';
 
 const props = defineProps({
     name: String
