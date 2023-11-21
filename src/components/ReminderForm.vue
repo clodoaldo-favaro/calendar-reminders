@@ -2,7 +2,7 @@
     <SlideIn :title="formTitle" @onClickCancel="handleClickCancel" @onClickOk="handleClickOk"
         @onClickClose="handleClickClose">
         <template v-slot:main>
-            <form id="myForm" @submit.prevent="onSubmit" ref="reminderForm">
+            <form id="reminderForm" @submit.prevent="onSubmit" ref="reminderForm">
                 <div class="flex-form">
                     <div>
                         <span class="p-float-label">
