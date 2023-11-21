@@ -31,3 +31,13 @@ npm run install
 ```
 npm run dev
 ```
+
+## Testing
+
+### E2E (Playwright)
+
+Run the following command:
+
+```
+npx playwright test
+```
