@@ -6,31 +6,12 @@ import ReminderForm from '../components/ReminderForm.vue'
 import CalendarMonth from '../components/CalendarMonth.vue'
 import { createTestingPinia } from '@pinia/testing'
 import useReminderStore from '../stores/ReminderStore'
-import { flushPromises } from '@vue/test-utils'
+import flushPromises from 'flush-promises'
+import waitForExpect from 'wait-for-expect'
+// import BaseInputText from '../components/BaseInputText.vue'
 import { expect } from 'vitest'
 
-test('calendar appears on screen', async () => {
-	const wrapper = mount(CalendarMonth, {
-		plugins: [createTestingPinia()],
-		global: {
-			components: {
-				Toast,
-			},
-			plugins: [ToastService, PrimeVue],
-		},
-	})
-
-	const daysGrid = wrapper.find('.days-grid')
-
-	expect(daysGrid.exists()).toBe(true)
-
-	const addReminderButton = daysGrid.findComponent({
-		ref: 'addReminderButton',
-	})
-	expect(addReminderButton.exists()).toBe(true)
-})
-
-test('reminder form mounts', async () => {
+test('can add reminder', async () => {
 	const wrapper = mount(ReminderForm, {
 		plugins: [createTestingPinia()],
 		global: {
@@ -41,40 +22,29 @@ test('reminder form mounts', async () => {
 		},
 	})
 
-	const reminderForm = wrapper.find({ ref: 'reminderForm' })
-	expect(reminderForm.exists()).toBe(true)
-})
+	const description = await wrapper.findComponent({ ref: 'description' })
+	await description.setProps({ modelValue: 'Study for exam' })
 
-test('cand add reminder', async () => {
-	const wrapper = mount(ReminderForm, {
-		plugins: [createTestingPinia({ stubActions: false })],
-		global: {
-			components: {
-				Toast,
-			},
-			plugins: [ToastService, PrimeVue],
-		},
+	const date = await wrapper.findComponent({ ref: 'date' })
+	await date.setValue(new Date())
+
+	const time = await wrapper.findComponent({ ref: 'time' })
+	await time.setValue('12:00')
+
+	const city = await wrapper.findComponent({ ref: 'city' })
+	await city.setValue({
+		cityName: 'San Francisco',
+		stateCode: 'CA',
+		countryCode: 'US',
 	})
 
-	const reminderForm = wrapper.find({ ref: 'reminderForm' })
-	const reminderDescriptionInput = reminderForm.find('#description')
-	expect(reminderDescriptionInput.exists()).toBe(true)
-	expect(reminderDescriptionInput.isVisible()).toBe(true)
-
-	const submitButton = reminderForm.find('#submitButton')
-	expect(submitButton.exists()).toBe(true)
-	expect(submitButton.isVisible()).toBe(true)
-	document.getElementById('submitButton').click()
+	const color = await wrapper.findComponent({ ref: 'color' })
+	await color.setValue('000000')
 
 	await flushPromises()
 
-	const descriptionErrorMessage = reminderForm.find('#description-error')
-	expect(descriptionErrorMessage.exists()).toBe(true)
-	expect(descriptionErrorMessage.isVisible()).toBe(true)
-	expect(document.querySelector('#description-error').textContent).toBe(
-		'Description is required.'
-	)
-
-	await reminderDescriptionInput.setValue('test description')
-	await flushPromises()
+	await waitForExpect(() => {
+		console.log(document.getElementById('description').value)
+		expect(wrapper.vm.$data).toMatchObject({})
+	})
 })

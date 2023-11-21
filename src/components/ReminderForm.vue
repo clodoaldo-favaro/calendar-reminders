@@ -6,8 +6,8 @@
                 <div class="flex-form">
                     <div>
                         <span class="p-float-label">
-                            <BaseInputText id="description" name="description" :class="{ 'p-invalid': errors.description }"
-                                aria-describedby="description-error" />
+                            <BaseInputText id="description" name="description" ref="description" modelValue="Pizza"
+                                :class="{ 'p-invalid': errors.description }" aria-describedby="description-error" />
                             <label for="description">Description</label>
                         </span>
                         <small id="description-error" class="p-error">
@@ -17,7 +17,7 @@
 
                     <div>
                         <span class="p-float-label">
-                            <BaseCalendar id="date" name="date" showIcon :class="{ 'p-invalid': errors.date }"
+                            <BaseCalendar id="date" name="date" ref="date" showIcon :class="{ 'p-invalid': errors.date }"
                                 aria-describedby="date-error" />
                             <label for="date">Date</label>
                         </span>
@@ -28,7 +28,7 @@
 
                     <div>
                         <span class="p-float-label">
-                            <BaseCalendar id="time" name="time" timeOnly :class="{ 'p-invalid': errors.time }"
+                            <BaseCalendar id="time" name="time" ref="time" timeOnly :class="{ 'p-invalid': errors.time }"
                                 aria-describedby="time-error" />
                             <label for="time">Time</label>
                         </span>
@@ -39,9 +39,9 @@
 
                     <div class="city-select-wrapper">
                         <span class="p-float-label">
-                            <BaseCascadeSelect id="city" name="city" append-to="self" :class="{ 'p-invalid': errors.city }"
-                                :options="countries" optionLabel="cityName" optionGroupLabel="name"
-                                :optionGroupChildren="['states', 'cities']" style="min-width: 14rem"
+                            <BaseCascadeSelect id="city" name="city" ref="city" append-to="self"
+                                :class="{ 'p-invalid': errors.city }" :options="countries" optionLabel="cityName"
+                                optionGroupLabel="name" :optionGroupChildren="['states', 'cities']" style="min-width: 14rem"
                                 placeholder="Select a City" aria-describedby="city-error" />
                             <label for="city">City</label>
                         </span>
@@ -51,7 +51,7 @@
 
                 <div class="color-input-wrapper">
                     <label for="color">Reminder color</label>
-                    <BaseColorPicker id="color" name="color" append-to="self" aria-describedby="color-error" />
+                    <BaseColorPicker id="color" name="color" ref="color" append-to="self" aria-describedby="color-error" />
                     <small id="color-error" class="p-error">
                         {{ errors.color }}
                     </small>
