@@ -6,7 +6,7 @@
                 <div class="flex-form">
                     <div>
                         <span class="p-float-label">
-                            <BaseInputText id="description" name="description" ref="description" modelValue="Pizza"
+                            <BaseInputText id="description" name="description" ref="description"
                                 :class="{ 'p-invalid': errors.description }" aria-describedby="description-error" />
                             <label for="description">Description</label>
                         </span>
